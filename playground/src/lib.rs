@@ -1,8 +1,3 @@
-#![allow(unused_variables)]
-#![allow(unused_imports)]
-#![allow(unused_assignments)]
-#![allow(unused_mut)]
-
 mod array_iter;
 mod arrays;
 mod complex_type;

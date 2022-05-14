@@ -26,7 +26,7 @@
 
 use std::cmp;
 
-struct Solution;
+pub struct Solution;
 
 impl Solution {
     pub fn longest_valid_parentheses(s: String) -> i32 {
@@ -64,7 +64,9 @@ impl Solution {
     }
 }
 
-fn main() {
+#[test]
+#[ignore]
+fn test_longest_valid_parentheses() {
     assert_eq!(Solution::longest_valid_parentheses("()".to_owned()), 2);
     assert_eq!(Solution::longest_valid_parentheses("(()".to_owned()), 2);
     assert_eq!(Solution::longest_valid_parentheses(")()())".to_owned()), 4);

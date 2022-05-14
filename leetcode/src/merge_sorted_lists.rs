@@ -33,11 +33,6 @@
 
 use std::fmt;
 
-trait Solution {
-    fn merge_k_lists(lists: Vec<Option<Box<ListNode>>>) -> Option<Box<ListNode>>;
-    fn reverse_k_group(head: Option<Box<ListNode>>, k: i32) -> Option<Box<ListNode>>;
-}
-
 // Definition for singly-linked list.
 #[derive(PartialEq, Eq, Clone, Debug)]
 pub struct ListNode {
@@ -98,9 +93,9 @@ impl fmt::Display for ListNode {
     }
 }
 
-struct MySolution;
+struct Solution;
 
-impl Solution for MySolution {
+impl Solution {
     fn merge_k_lists(mut lists: Vec<Option<Box<ListNode>>>) -> Option<Box<ListNode>> {
         if lists.len() == 0 {
             return None;
@@ -143,12 +138,13 @@ impl Solution for MySolution {
         merged_list.next
     }
 
-    fn reverse_k_group(head: Option<Box<ListNode>>, k: i32) -> Option<Box<ListNode>> {
+    fn reverse_k_group(_head: Option<Box<ListNode>>, _k: i32) -> Option<Box<ListNode>> {
         unimplemented!()
     }
 }
 
-fn main() {
+#[test]
+fn test_longest_parenthesis() {
     let list = ListNode::from_list(vec![1, 2, 3, 4]);
     let list1 = ListNode::from_list(vec![3, 4, 5]);
     let list2 = ListNode::from_list(vec![-1, 3, 5]);
@@ -156,19 +152,19 @@ fn main() {
     let list4 = ListNode::from_list(vec![1, 4, 9]);
     let list_array = vec![list, list1, list2, list3, list4];
 
-    let sol = MySolution::merge_k_lists(list_array).unwrap().to_list();
+    let sol = Solution::merge_k_lists(list_array).unwrap().to_list();
 
     assert_eq!(
         sol,
         vec![-1, 1, 1, 2, 3, 3, 3, 4, 4, 4, 5, 5, 9, 10, 14, 17, 19]
     );
-    assert_eq!(MySolution::merge_k_lists(vec![]), None);
+    assert_eq!(Solution::merge_k_lists(vec![]), None);
     assert_eq!(
-        MySolution::merge_k_lists(vec![ListNode::from_list(vec![])]),
+        Solution::merge_k_lists(vec![ListNode::from_list(vec![])]),
         None
     );
     assert_eq!(
-        MySolution::merge_k_lists(vec![
+        Solution::merge_k_lists(vec![
             ListNode::from_list(vec![]),
             ListNode::from_list(vec![])
         ]),

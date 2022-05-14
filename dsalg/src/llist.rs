@@ -1,16 +1,14 @@
-use std::mem;
-
 #[derive(Debug)]
-pub struct LinkedList<T>(Option<(T, Box<LinkedList<T>>)>);
+pub struct RecursiveLinkedList<T>(Option<(T, Box<RecursiveLinkedList<T>>)>);
 
-impl<T: PartialOrd> LinkedList<T> {
+impl<T: PartialOrd> RecursiveLinkedList<T> {
     pub fn new() -> Self {
-        LinkedList(None)
+        RecursiveLinkedList(None)
     }
 
     pub fn push_front(&mut self, data: T) {
         let t = self.0.take();
-        self.0 = Some((data, Box::new(LinkedList(t))));
+        self.0 = Some((data, Box::new(RecursiveLinkedList(t))));
     }
 
     pub fn push_back(&mut self, data: T) {
@@ -37,14 +35,15 @@ impl<T: PartialOrd> LinkedList<T> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::mem;
 
     #[test]
     fn test_linked_list() {
         let _a: u32 = 10;
         let _b: (u32, ) = (10, );
-        let empty: LinkedList<u32> = LinkedList::new();
-        let mut ll: LinkedList<u32> = LinkedList::new();
-        println!("empty = {:?} {:p} {:?} size:{:?}", empty, &empty, mem::discriminant(&empty.0), mem::size_of::<LinkedList<i32>>());
+        let empty: RecursiveLinkedList<u32> = RecursiveLinkedList::new();
+        let mut ll: RecursiveLinkedList<u32> = RecursiveLinkedList::new();
+        println!("empty = {:?} {:p} {:?} size:{:?}", empty, &empty, mem::discriminant(&empty.0), mem::size_of::<RecursiveLinkedList<i32>>());
         println!("ll = {:?} {:p} {:?}", ll, &ll, mem::discriminant(&ll.0));
 
         ll.push_front(3);
@@ -55,7 +54,7 @@ mod tests {
 
         println!("ll = {:?} {:p}", ll, &ll);
 
-        let mut sorted_list: Box<LinkedList<u32>> = Box::new(LinkedList::new());
+        let mut sorted_list: Box<RecursiveLinkedList<u32>> = Box::new(RecursiveLinkedList::new());
         println!("sorted_list = {:?} {:p}", sorted_list, &sorted_list);
 
         sorted_list.insert_sorted(9);
@@ -68,13 +67,14 @@ mod tests {
     }
 
     #[test]
-    #[should_panic]
+    #[ignore]
     fn test_linked_list_stack_blown() {
-        let mut blown_stack: Box<LinkedList<u32>> = Box::new(LinkedList::new());
-        let iterations = 1698;
+        let mut blown_stack: Box<RecursiveLinkedList<u32>> = Box::new(RecursiveLinkedList::new());
+        let iterations = 1697;
         println!("Trying to blow stack with iterations: {}", iterations);
         for i in 0..iterations {
-            blown_stack.insert_sorted(i);
+            // blown_stack.insert_sorted(i);
+            blown_stack.push_back(i);
         }
         println!("ll1 = {:?} {:p}", blown_stack, &blown_stack);
     }
