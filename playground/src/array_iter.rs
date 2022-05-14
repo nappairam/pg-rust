@@ -1,3 +1,4 @@
+#[cfg(test)]
 #[test]
 fn test_array_iter() {
     let owned = ["a".to_owned(), "e".to_owned()];

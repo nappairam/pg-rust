@@ -35,43 +35,47 @@ impl<T: PartialOrd> LinkedList<T> {
 }
 
 #[cfg(test)]
-#[test]
-fn test_linked_list() {
-    let _a: u32 = 10;
-    let _b: (u32, ) = (10, );
-    let empty: LinkedList<u32> = LinkedList::new();
-    let mut ll: LinkedList<u32> = LinkedList::new();
-    println!("empty = {:?} {:p} {:?} size:{:?}", empty, &empty, mem::discriminant(&empty.0), mem::size_of::<LinkedList<i32>>());
-    println!("ll = {:?} {:p} {:?}", ll, &ll, mem::discriminant(&ll.0));
+mod tests {
+    use super::*;
 
-    ll.push_front(3);
-    println!("ll = {:?} {:p} {:?}", ll, &ll, mem::discriminant(&ll.0));
-    ll.push_front(1);
-    ll.push_front(4);
-    ll.push_back(8);
+    #[test]
+    fn test_linked_list() {
+        let _a: u32 = 10;
+        let _b: (u32, ) = (10, );
+        let empty: LinkedList<u32> = LinkedList::new();
+        let mut ll: LinkedList<u32> = LinkedList::new();
+        println!("empty = {:?} {:p} {:?} size:{:?}", empty, &empty, mem::discriminant(&empty.0), mem::size_of::<LinkedList<i32>>());
+        println!("ll = {:?} {:p} {:?}", ll, &ll, mem::discriminant(&ll.0));
 
-    println!("ll = {:?} {:p}", ll, &ll);
+        ll.push_front(3);
+        println!("ll = {:?} {:p} {:?}", ll, &ll, mem::discriminant(&ll.0));
+        ll.push_front(1);
+        ll.push_front(4);
+        ll.push_back(8);
 
-    let mut ll1: Box<LinkedList<u32>> = Box::new(LinkedList::new());
-    println!("ll1 = {:?} {:p}", ll1, &ll1);
+        println!("ll = {:?} {:p}", ll, &ll);
 
-    ll1.insert_sorted(9);
-    ll1.insert_sorted(1);
-    ll1.insert_sorted(10);
-    ll1.insert_sorted(8);
-    ll1.insert_sorted(5);
+        let mut sorted_list: Box<LinkedList<u32>> = Box::new(LinkedList::new());
+        println!("sorted_list = {:?} {:p}", sorted_list, &sorted_list);
 
-    println!("ll1 = {:?} {:p}", ll1, &ll1);
-}
+        sorted_list.insert_sorted(9);
+        sorted_list.insert_sorted(1);
+        sorted_list.insert_sorted(10);
+        sorted_list.insert_sorted(8);
+        sorted_list.insert_sorted(5);
 
-#[test]
-#[should_panic]
-fn test_linked_list_stack_blown() {
-    let mut ll1: Box<LinkedList<u32>> = Box::new(LinkedList::new());
-    let iterations = 1698;
-    println!("Trying to blow stack with iterations: {}", iterations);
-    for i in 0..iterations {
-        ll1.insert_sorted(i);
+        println!("sorted list = {:?} {:p}", sorted_list, &sorted_list);
     }
-    println!("ll1 = {:?} {:p}", ll1, &ll1);
+
+    #[test]
+    #[should_panic]
+    fn test_linked_list_stack_blown() {
+        let mut blown_stack: Box<LinkedList<u32>> = Box::new(LinkedList::new());
+        let iterations = 1698;
+        println!("Trying to blow stack with iterations: {}", iterations);
+        for i in 0..iterations {
+            blown_stack.insert_sorted(i);
+        }
+        println!("ll1 = {:?} {:p}", blown_stack, &blown_stack);
+    }
 }
