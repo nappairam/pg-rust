@@ -3,16 +3,14 @@
 #[test]
 fn test_option() {
     #[derive(Debug, Default)]
-    struct Test {
-        a: i32,
-        b: u32,
-    }
+    struct Test<T>(Option<(T, T)>);
 
-    let _a = Test { a: 9, b: 10 };
-    let _b = Test { a: 1, b: 2 };
+    let _a = Test(Some((10, 9)));
+    let _b = Test(Some((-1, 0)));
+    let _c: Test<i32> = Test(None);
 
-    let a: Option<Test> = Some(_a);
-    let b: Option<Test> = Some(_b);
+    let a: Option<Test<_>> = Some(_a);
+    let b: Option<Test<_>> = Some(_b);
     println!("a is {:p}", &a);
     dbg!(&a);
 
@@ -34,7 +32,7 @@ fn test_option() {
     ptr = &b;
     println!("ptr after changing is {:p}->{:p} {:?}", &ptr, ptr, ptr);
 
-    let a: Option<Test> = None;
+    let a: Option<Test<i32>> = None;
     println!("{:p}", &a);
     dbg!(&a);
 }

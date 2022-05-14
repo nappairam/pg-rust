@@ -80,7 +80,8 @@ fn ownership_move() {
     // println!("{:p} {:?}", &_a, _a);
 }
 
-fn main() {
+#[test]
+fn test_datatype_layout() {
     println!("\nInteger Layout");
     integer_layout();
 

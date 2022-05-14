@@ -1,4 +1,5 @@
-fn main() {
+#[test]
+fn test_array_iter() {
     let owned = ["a".to_owned(), "e".to_owned()];
     let borrowed = ["a", "e"];
     for _owned in owned.into_iter() {

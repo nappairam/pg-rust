@@ -17,14 +17,9 @@ fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
     vec![]
 }
 
-fn main() {
-    let results = two_sum(vec![0, 1, 2, 4, 5], 6);
-    println!("Numbers are {:?}", results);
-}
-
 #[cfg(test)]
 mod tests {
-    use crate::two_sum;
+    use super::two_sum;
 
     #[test]
     fn test_two_sum() {

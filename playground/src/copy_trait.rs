@@ -15,7 +15,8 @@ fn is_copy<T: Copy>() {
 #[derive(Copy, Clone)]
 struct Unit;
 
-fn main() {
+#[test]
+fn test_is_copyable() {
     is_copy::<bool>();
     // is_copy::<&mut i32>();
     is_copy::<char>();
