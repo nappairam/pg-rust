@@ -170,5 +170,9 @@ fn test_longest_parenthesis() {
         ]),
         None
     );
+    assert_eq!(
+        Solution::reverse_k_group(ListNode::from_list(vec![]), 0),
+        None
+    );
     println!("Merged sorted lists success")
 }
