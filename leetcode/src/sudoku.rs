@@ -24,14 +24,123 @@ It is guaranteed that the input board has only one solution.
 struct Solution;
 
 impl Solution {
-    pub fn solve_sudoku(board: &mut Vec<Vec<char>>) -> i32 {
-        0
+    pub fn solve_sudoku(board: &mut Vec<Vec<char>>) {
+        Sudoku::from(board).solve();
     }
 }
 
-struct
+#[derive(Debug, PartialEq)]
+struct Sudoku<'a>(&'a mut Vec<Vec<char>>);
 
-#[test]
-fn test_sudoku() {
-    assert_eq!(Solution::solve_sudoku(&mut vec![vec![]]), 0);
+impl<'a> Sudoku<'a> {
+    pub fn from(input: &'a mut Vec<Vec<char>>) -> Self {
+        Self(input)
+    }
+
+    fn is_safe(&self, x: usize, y: usize, value: char) -> bool {
+        // Check in rows
+        let present_in_row = self.0[x].iter().any(|&cell| cell == value);
+
+        // Check in columns
+        let present_in_col = self.0.iter().any(|row| row[y] == value);
+
+        // Check in columns
+        let mut present_in_square = false;
+        let x= (x / 3) * 3;
+        let y= (y / 3) * 3;
+        for _x in x..x+3 {
+            for _y in y..y+3 {
+                present_in_square |= self.0[_x][_y] == value
+            }
+        }
+
+        // println!("Checking val({value}) for {}: {present_in_row} {present_in_col} {present_in_square}", self.0[x][y]);
+        !(present_in_row || present_in_col || present_in_square)
+    }
+
+    fn _solve(&mut self, x: usize, y: usize) -> bool {
+        // println!("Solving for {x} {y}");
+        if x > 8 { return true; }
+
+        let mut next_x = x;
+        let mut next_y = y + 1;
+        if next_y > 8 {
+            next_x += 1;
+            next_y = 0;
+        }
+        if self.0[x][y] != '.' {
+            return self._solve(next_x, next_y)
+        }
+
+        for trying in ['1', '2', '3', '4', '5', '6', '7', '8', '9'] {
+            if self.is_safe(x, y, trying) {
+                self.0[x][y] = trying;
+                if self._solve(next_x, next_y) {
+                    return true;
+                }
+            }
+        }
+        self.0[x][y] = '.';
+
+        false
+    }
+
+
+    pub fn solve(&mut self) -> bool {
+        self._solve(0, 0)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    fn get_sample_data () -> (Vec<Vec<char>>, Vec<Vec<char>>) {
+        let problem = vec![
+            vec!['5', '3', '.', '.', '7', '.', '.', '.', '.'],
+            vec!['6', '.', '.', '1', '9', '5', '.', '.', '.'],
+            vec!['.', '9', '8', '.', '.', '.', '.', '6', '.'],
+            vec!['8', '.', '.', '.', '6', '.', '.', '.', '3'],
+            vec!['4', '.', '.', '8', '.', '3', '.', '.', '1'],
+            vec!['7', '.', '.', '.', '2', '.', '.', '.', '6'],
+            vec!['.', '6', '.', '.', '.', '.', '2', '8', '.'],
+            vec!['.', '.', '.', '4', '1', '9', '.', '.', '5'],
+            vec!['.', '.', '.', '.', '8', '.', '.', '7', '9'],
+        ];
+        let solution = vec![
+            vec!['5', '3', '4', '6', '7', '8', '9', '1', '2'],
+            vec!['6', '7', '2', '1', '9', '5', '3', '4', '8'],
+            vec!['1', '9', '8', '3', '4', '2', '5', '6', '7'],
+            vec!['8', '5', '9', '7', '6', '1', '4', '2', '3'],
+            vec!['4', '2', '6', '8', '5', '3', '7', '9', '1'],
+            vec!['7', '1', '3', '9', '2', '4', '8', '5', '6'],
+            vec!['9', '6', '1', '5', '3', '7', '2', '8', '4'],
+            vec!['2', '8', '7', '4', '1', '9', '6', '3', '5'],
+            vec!['3', '4', '5', '2', '8', '6', '1', '7', '9']
+        ];
+        return (problem.clone(), solution.clone())
+    }
+
+    #[test]
+    fn test_sudoku() {
+        let (mut problem, solution) = get_sample_data();
+        let mut problem = Sudoku::from(&mut problem);
+
+        assert_eq!(problem.is_safe(1, 1, '3'), false);
+        assert_eq!(problem.is_safe(2, 1, '3'), false);
+        assert_eq!(problem.is_safe(3, 2, '3'), false);
+        assert_eq!(problem.is_safe(8, 8, '3'), false);
+        assert_eq!(problem.is_safe(0, 2, '4'), true);
+        assert_eq!(problem.is_safe(3, 1, '5'), true);
+        assert_eq!(problem.is_safe(8, 6, '1'), true);
+
+        assert!(problem.solve());
+        assert_eq!(problem.0, &solution);
+    }
+
+    #[test]
+    fn test_sudoku_using_solution() {
+        let (mut problem, solution) = get_sample_data();
+        Solution::solve_sudoku(&mut problem);
+        assert_eq!(problem, solution);
+    }
 }
