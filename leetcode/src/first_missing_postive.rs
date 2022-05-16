@@ -34,13 +34,14 @@ impl Solution {
     pub fn first_missing_positive(nums: Vec<i32>) -> i32 {
         let nums_len = nums.len();
         let mut dp: Vec<bool> = vec![false; nums_len + 1];
-        for num in &nums {
-            if *num < 1 || *num > nums_len as i32 {
-                continue;
-            }
-            dp[*num as usize] = true;
-        }
-        (dp[1..].iter().position(|&value| !value).unwrap_or(nums_len) + 1) as i32
+        // for num in &nums {
+        //     if *num < 1 || *num > nums_len as i32 {
+        //         continue;
+        //     }
+        //     dp[*num as usize] = true;
+        // }
+        nums.iter().filter(|&&x| x > 0 && x <= nums_len as i32).for_each(|&x| dp[x as usize] = true);
+        (dp.iter().skip(1).position(|&value| !value).unwrap_or(nums_len) + 1) as i32
     }
 
     pub fn first_missing_positive_naive(nums: Vec<i32>) -> i32 {
