@@ -29,6 +29,8 @@ impl Solution {
     }
 }
 
+const NUMBERS: [char; 9] = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
 #[derive(Debug, PartialEq)]
 struct Sudoku<'a>(&'a mut Vec<Vec<char>>);
 
@@ -38,28 +40,16 @@ impl<'a> Sudoku<'a> {
     }
 
     fn is_safe(&self, x: usize, y: usize, value: char) -> bool {
-        // Check in rows
-        let present_in_row = self.0[x].iter().any(|&cell| cell == value);
+        // Find x and y of contained square
+        let _x= (x / 3) * 3;
+        let _y= (y / 3) * 3;
 
-        // Check in columns
-        let present_in_col = self.0.iter().any(|row| row[y] == value);
-
-        // Check in columns
-        let mut present_in_square = false;
-        let x= (x / 3) * 3;
-        let y= (y / 3) * 3;
-        for _x in x..x+3 {
-            for _y in y..y+3 {
-                present_in_square |= self.0[_x][_y] == value
-            }
-        }
-
-        // println!("Checking val({value}) for {}: {present_in_row} {present_in_col} {present_in_square}", self.0[x][y]);
-        !(present_in_row || present_in_col || present_in_square)
+        !self.0[x].iter().any(|&cell| cell == value) &&
+            !self.0.iter().any(|row| row[y] == value) &&
+            !self.0[_x.._x+3].iter().any(|row| row[_y.._y+3].iter().any(|&cell| cell == value))
     }
 
     fn _solve(&mut self, x: usize, y: usize) -> bool {
-        // println!("Solving for {x} {y}");
         if x > 8 { return true; }
 
         let mut next_x = x;
@@ -72,12 +62,11 @@ impl<'a> Sudoku<'a> {
             return self._solve(next_x, next_y)
         }
 
-        for trying in ['1', '2', '3', '4', '5', '6', '7', '8', '9'] {
-            if self.is_safe(x, y, trying) {
-                self.0[x][y] = trying;
-                if self._solve(next_x, next_y) {
-                    return true;
-                }
+        for test_value in NUMBERS {
+            if !self.is_safe(x, y, test_value) { continue; }
+            self.0[x][y] = test_value;
+            if self._solve(next_x, next_y) {
+                return true;
             }
         }
         self.0[x][y] = '.';
