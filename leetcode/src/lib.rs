@@ -4,3 +4,4 @@ mod merge_sorted_lists;
 mod sudoku;
 mod shortest_path_binary_matrix;
 mod two_sum;
+mod matrix_longest_inc_path;
