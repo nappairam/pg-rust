@@ -29,6 +29,8 @@
 // 1 <= m, n <= 100
 // obstacleGrid[i][j] is 0 or 1.
 
+use std::mem;
+
 struct Solution;
 
 impl Solution {
@@ -40,24 +42,29 @@ impl Solution {
             return 0;
         }
 
-        let mut path_grid = vec![vec![0; n]; m];
-        path_grid[m - 1][n - 1] = 1;
+        let mut grid = vec![vec![0; n]; 2];
+        let mut curr = 0;
+        let mut prev = 1;
+        grid[curr][n-1] = 1;
+
         for x in (0..m).rev() {
             for y in (0..n).rev() {
                 if obstacle_grid[x][y] == 1 {
                     continue
                 }
                 if x + 1 < m && obstacle_grid[x + 1][y] == 0 {
-                    path_grid[x][y] += path_grid[x + 1][y];
+                    grid[curr][y] += grid[prev][y];
                 }
 
                 if y + 1 < n && obstacle_grid[x][y + 1] == 0 {
-                    path_grid[x][y] += path_grid[x][y + 1];
+                    grid[curr][y] += grid[curr][y+1];
                 }
             }
+            mem::swap(&mut curr, &mut prev);
+            grid[curr].iter_mut().for_each(|x| *x = 0);
         }
-        // println!("{:?}", path_grid);
-        path_grid[0][0]
+        // println!("{:?}", grid);
+        grid[prev][0]
     }
 
     pub fn unique_paths_with_obstacles1(obstacle_grid: Vec<Vec<i32>>) -> i32 {
