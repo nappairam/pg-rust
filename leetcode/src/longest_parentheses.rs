@@ -33,8 +33,8 @@ impl Solution {
         let mut valid_seq: Vec<(usize, usize, usize)> = vec![];
         let mut sta = vec![];
         for (i, c) in s.chars().enumerate() {
-            println!("Matching char[{i}] '{c}' Stack: {:?}", sta);
-            println!("Valid seq: {:?}", valid_seq);
+            // println!("Matching char[{i}] '{c}' Stack: {:?}", sta);
+            // println!("Valid seq: {:?}", valid_seq);
             match c {
                 '(' => {
                     sta.push(c)
@@ -45,11 +45,14 @@ impl Solution {
                     }
                     sta.pop();
 
-                    let mut next_value = (i-1, i, 2);
-                    while !valid_seq.is_empty() && valid_seq[valid_seq.len()-1].1 == i-1 {
+                    let mut next_value = (i, i, 0);
+                    let _last = |c: &Vec<_>| c.len()-1;
+                    while !valid_seq.is_empty() && valid_seq[_last(&valid_seq)].1 == next_value.0 - 1 {
                         let prev_value = valid_seq.pop().unwrap();
-                        next_value = (prev_value.0-1, i, prev_value.2 + 2);
+                        next_value = (prev_value.0, i, prev_value.2 + next_value.2);
                     }
+                    next_value.0 -= 1;
+                    next_value.2 += 2;
                     valid_seq.push(next_value);
                 },
                 _ => continue
@@ -58,11 +61,15 @@ impl Solution {
         println!("Valid seq: {:?}", valid_seq);
         valid_seq.iter().fold((usize::MIN, usize::MIN, usize::MIN), |acc, &x| {
             let mut curr_count = x.2;
-            println!("Inside loop (max, end, count){:?} (start, end, count) {:?}", acc, x);
-            if acc.1 + 1 == x.0 {
+            // print!("Inside loop acc(max, end, count){:?} x(start, end, count) {:?} curr_count:{curr_count} ==>", acc, x);
+            // print!("acc.1 {} x.0 {} curr {} ", acc.1, x.0, curr_count);
+            if acc.1 == x.0 || acc.1+1 == x.0 {
+                // print!("count UP");
                 curr_count += acc.2;
             }
-            (cmp::max(acc.0, curr_count), x.1, x.2)
+            let i = (cmp::max(acc.0, curr_count), x.1, curr_count);
+            // println!("{:?}", i);
+            i
         }).0 as i32
     }
 }
@@ -70,7 +77,7 @@ impl Solution {
 #[test]
 #[ignore]
 fn test_longest_valid_parentheses_one() {
-    assert_eq!(Solution::longest_valid_parentheses("(()())".to_owned()), 6);
+    assert_eq!(Solution::longest_valid_parentheses("(()()(())((".to_owned()), 8);
 }
 
 #[test]
@@ -86,4 +93,5 @@ fn test_longest_valid_parentheses() {
     assert_eq!(Solution::longest_valid_parentheses("(())(".to_owned()), 4);
     assert_eq!(Solution::longest_valid_parentheses("(()(((()".to_owned()), 2);
     assert_eq!(Solution::longest_valid_parentheses("()(())".to_owned()), 6);
+    assert_eq!(Solution::longest_valid_parentheses(")(((((()())()()))()(()))(".to_owned()), 22);
 }
