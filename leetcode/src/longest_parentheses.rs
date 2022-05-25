@@ -45,14 +45,13 @@ impl Solution {
                     }
                     sta.pop();
 
-                    let mut next_value = (i, i, 0);
-                    let _last = |c: &Vec<_>| c.len()-1;
-                    while !valid_seq.is_empty() && valid_seq[_last(&valid_seq)].1 == next_value.0 - 1 {
+                    let mut next_value = (i, i, 2);
+                    let last_element = |c: &Vec<_>| c[c.len()-1];
+                    while !valid_seq.is_empty() && last_element(&valid_seq).1 == next_value.0 - 1 {
                         let prev_value = valid_seq.pop().unwrap();
                         next_value = (prev_value.0, i, prev_value.2 + next_value.2);
                     }
                     next_value.0 -= 1;
-                    next_value.2 += 2;
                     valid_seq.push(next_value);
                 },
                 _ => continue
@@ -61,15 +60,10 @@ impl Solution {
         println!("Valid seq: {:?}", valid_seq);
         valid_seq.iter().fold((usize::MIN, usize::MIN, usize::MIN), |acc, &x| {
             let mut curr_count = x.2;
-            // print!("Inside loop acc(max, end, count){:?} x(start, end, count) {:?} curr_count:{curr_count} ==>", acc, x);
-            // print!("acc.1 {} x.0 {} curr {} ", acc.1, x.0, curr_count);
-            if acc.1 == x.0 || acc.1+1 == x.0 {
-                // print!("count UP");
+            if acc.1+1 == x.0 {
                 curr_count += acc.2;
             }
-            let i = (cmp::max(acc.0, curr_count), x.1, curr_count);
-            // println!("{:?}", i);
-            i
+            (cmp::max(acc.0, curr_count), x.1, curr_count)
         }).0 as i32
     }
 }
@@ -93,5 +87,6 @@ fn test_longest_valid_parentheses() {
     assert_eq!(Solution::longest_valid_parentheses("(())(".to_owned()), 4);
     assert_eq!(Solution::longest_valid_parentheses("(()(((()".to_owned()), 2);
     assert_eq!(Solution::longest_valid_parentheses("()(())".to_owned()), 6);
+    assert_eq!(Solution::longest_valid_parentheses("(()()(())((".to_owned()), 8);
     assert_eq!(Solution::longest_valid_parentheses(")(((((()())()()))()(()))(".to_owned()), 22);
 }
