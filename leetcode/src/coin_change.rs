@@ -29,22 +29,27 @@
 struct Solution;
 
 use std::cmp;
-
 impl Solution {
     pub fn coin_change(coins: Vec<i32>, amount: i32) -> i32 {
-        let mut dp = vec![i32::MAX - 1; 1 + amount as usize];
+        let mut dp = vec![i32::MAX; 1 + amount as usize];
         dp[0] = 0;
+        let mut coins = coins.clone();
+        coins.sort();
 
         for x in 1..amount + 1 {
-            let b = coins.iter().filter(|&&c| c <= x).map(|c| x-c).fold(i32::MAX - 1, |_a, c| {
-                println!("c is {} x is {} {:?}", c, x, dp);
-                cmp::min(1 + dp[c as usize], dp[x as usize])
+            let b = coins.iter().filter(|&&c| c <= x).map(|c| x-c).fold(i32::MAX, |_a, c| {
+                // println!("c is {} x is {} {:?}", c, x, dp);
+                if dp[c as usize] != i32::MAX {
+                    cmp::min(1 + dp[c as usize], dp[x as usize])
+                } else {
+                    i32::MAX
+                }
             });
-            println!("dp[{x}] is {:?}", b);
             dp[x as usize] = b;
+            // println!("{:?}", dp);
         }
         let result = dp[amount as usize];
-        if result == i32::MAX -1 {
+        if result == i32::MAX {
             -1
         } else {
             result
@@ -58,9 +63,10 @@ mod tests {
 
     #[test]
     fn test_coin_change() {
-        // assert_eq!(Solution::coin_change(vec![1, 2, 5], 11), 3);
-        // assert_eq!(Solution::coin_change(vec![2], 3), -1);
-        // assert_eq!(Solution::coin_change(vec![1], 0), 0);
-        assert_eq!(Solution::coin_change(vec![2,5,10,1], 27), 27);
+        assert_eq!(Solution::coin_change(vec![1, 2, 5], 11), 3);
+        assert_eq!(Solution::coin_change(vec![2], 3), -1);
+        assert_eq!(Solution::coin_change(vec![1], 0), 0);
+        assert_eq!(Solution::coin_change(vec![2,5,10,1], 27), 4);
+        assert_eq!(Solution::coin_change(vec![2,5,10,1], 27), 4);
     }
 }

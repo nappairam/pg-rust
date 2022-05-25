@@ -24,44 +24,53 @@
 // s[i] is '(', or ')'
 
 
-use std::cmp;
-
 pub struct Solution;
+
+use std::cmp;
 
 impl Solution {
     pub fn longest_valid_parentheses(s: String) -> i32 {
+        let mut valid_seq: Vec<(usize, usize, usize)> = vec![];
         let mut sta = vec![];
-        let mut longest_count = 0;
-        let mut prev_count = 0;
-        let mut count = 0;
-        for c in s.chars() {
+        for (i, c) in s.chars().enumerate() {
+            println!("Matching char[{i}] '{c}' Stack: {:?}", sta);
+            println!("Valid seq: {:?}", valid_seq);
             match c {
                 '(' => {
-                    if sta.is_empty() {
-                        prev_count = count;
-                        longest_count = cmp::max(longest_count, count);
-                        count = 0;
-                    }
                     sta.push(c)
                 },
                 ')' => {
                     if sta.is_empty() {
-                        longest_count = cmp::max(longest_count, count + prev_count);
-                        count = 0;
                         continue;
                     }
                     sta.pop();
-                    count += 2;
-                    if sta.is_empty() {
-                        count += prev_count;
-                        prev_count = 0;
+
+                    let mut next_value = (i-1, i, 2);
+                    while !valid_seq.is_empty() && valid_seq[valid_seq.len()-1].1 == i-1 {
+                        let prev_value = valid_seq.pop().unwrap();
+                        next_value = (prev_value.0-1, i, prev_value.2 + 2);
                     }
+                    valid_seq.push(next_value);
                 },
                 _ => continue
             }
         }
-        cmp::max(longest_count, count)
+        println!("Valid seq: {:?}", valid_seq);
+        valid_seq.iter().fold((usize::MIN, usize::MIN, usize::MIN), |acc, &x| {
+            let mut curr_count = x.2;
+            println!("Inside loop (max, end, count){:?} (start, end, count) {:?}", acc, x);
+            if acc.1 + 1 == x.0 {
+                curr_count += acc.2;
+            }
+            (cmp::max(acc.0, curr_count), x.1, x.2)
+        }).0 as i32
     }
+}
+
+#[test]
+#[ignore]
+fn test_longest_valid_parentheses_one() {
+    assert_eq!(Solution::longest_valid_parentheses("(()())".to_owned()), 6);
 }
 
 #[test]
@@ -76,4 +85,5 @@ fn test_longest_valid_parentheses() {
     assert_eq!(Solution::longest_valid_parentheses("()(()".to_owned()), 2);
     assert_eq!(Solution::longest_valid_parentheses("(())(".to_owned()), 4);
     assert_eq!(Solution::longest_valid_parentheses("(()(((()".to_owned()), 2);
+    assert_eq!(Solution::longest_valid_parentheses("()(())".to_owned()), 6);
 }
