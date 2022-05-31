@@ -11,3 +11,4 @@ mod unique_paths_ii;
 mod coin_change;
 mod no_1_bits;
 mod max_prod_word;
+mod binary_code;
