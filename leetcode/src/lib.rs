@@ -16,3 +16,4 @@ mod running_sum;
 mod non_decreasing_array;
 mod transpose_matrix;
 mod rotate_image;
+mod check_matrix_rotation;
