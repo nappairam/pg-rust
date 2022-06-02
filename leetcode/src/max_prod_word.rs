@@ -45,7 +45,7 @@ impl Solution {
             }
             dp.push(bitmap);
         }
-        for (index, bitmap) in dp.iter().enumerate() {
+        for (index, _) in dp.iter().enumerate() {
             for i in index+1..total_words {
                 // println!("Comparing {} {} with bitmask {:b} {:b}", words[index], words[i], dp[index], dp[i]);
                 if dp[index] & dp[i] == 0 {

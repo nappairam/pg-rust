@@ -13,3 +13,6 @@ mod no_1_bits;
 mod max_prod_word;
 mod binary_code;
 mod running_sum;
+mod non_decreasing_array;
+mod transpose_matrix;
+mod rotate_image;

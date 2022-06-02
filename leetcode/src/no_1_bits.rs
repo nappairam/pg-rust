@@ -32,25 +32,17 @@
 //
 // Follow up: If this function is called many times, how would you optimize it?
 
-use std::ops::Shr;
-
-pub struct Solution;
+struct Solution;
 
 impl Solution {
-    fn hamming_weight (n: u32, debug: bool) -> i32 {
-        if debug {
-            println!("Binary representation of {n} is {:b}", n);
-        }
+    pub fn hamming_weight(n: u32) -> i32 {
         n.count_ones() as i32
-    }
-    pub fn hammingWeight (n: u32) -> i32 {
-        Solution::hamming_weight(n, false)
     }
 }
 
 #[test]
 fn test_homing_weight() {
-    assert_eq!(Solution::hamming_weight(10, true), 1);
+    assert_eq!(Solution::hamming_weight(0x10), 1);
     let n = 10;
     println!("Binary representation of {n} is {:b}", n);
     assert_eq!(10u32.checked_shr(1), Some(5));
