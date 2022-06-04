@@ -41,8 +41,8 @@ impl Solution {
             return false;
         }
 
-        for i in 0..=slen-k {
-            codes.insert(&s[i..i+k]);
+        for i in 0..=slen - k {
+            codes.insert(&s[i..i + k]);
             if codes.len() == total_len {
                 return true;
             }

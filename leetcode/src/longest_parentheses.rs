@@ -23,7 +23,6 @@
 // 0 <= s.length <= 3 * 104
 // s[i] is '(', or ')'
 
-
 pub struct Solution;
 
 use std::cmp;
@@ -37,9 +36,7 @@ impl Solution {
             // print!("Matching char[{i}] '{c}' Stack: {:?} ", sta);
             // println!("Curr seq: {:?}", valid_seq);
             match c {
-                '(' => {
-                    sta.push(c)
-                },
+                '(' => sta.push(c),
                 ')' => {
                     if sta.is_empty() {
                         continue;
@@ -47,31 +44,37 @@ impl Solution {
                     sta.pop();
 
                     let mut next_value = (i, i, 2);
-                    let last_element = |c: &Vec<_>| c[c.len()-1];
+                    let last_element = |c: &Vec<_>| c[c.len() - 1];
                     while !valid_seq.is_empty() && last_element(&valid_seq).1 == next_value.0 - 1 {
                         let prev_value = valid_seq.pop().unwrap();
                         next_value = (prev_value.0, i, prev_value.2 + next_value.2);
                     }
                     next_value.0 -= 1;
                     valid_seq.push(next_value);
-                },
-                _ => continue
+                }
+                _ => continue,
             }
         }
         println!("Valid seq: {:?}", valid_seq);
-        valid_seq.iter().fold((usize::MIN, usize::MIN, usize::MIN), |acc, &x| {
-            let mut curr_count = x.2;
-            if acc.1+1 == x.0 {
-                curr_count += acc.2;
-            }
-            (cmp::max(acc.0, curr_count), x.1, curr_count)
-        }).0 as i32
+        valid_seq
+            .iter()
+            .fold((usize::MIN, usize::MIN, usize::MIN), |acc, &x| {
+                let mut curr_count = x.2;
+                if acc.1 + 1 == x.0 {
+                    curr_count += acc.2;
+                }
+                (cmp::max(acc.0, curr_count), x.1, curr_count)
+            })
+            .0 as i32
     }
 }
 
 #[test]
 fn test_longest_valid_parentheses_one() {
-    assert_eq!(Solution::longest_valid_parentheses("(()()(())((".to_owned()), 8);
+    assert_eq!(
+        Solution::longest_valid_parentheses("(()()(())((".to_owned()),
+        8
+    );
 }
 
 #[test]
@@ -84,10 +87,19 @@ fn test_longest_valid_parentheses() {
     assert_eq!(Solution::longest_valid_parentheses(")())())".to_owned()), 2);
     assert_eq!(Solution::longest_valid_parentheses("()(()".to_owned()), 2);
     assert_eq!(Solution::longest_valid_parentheses("(())(".to_owned()), 4);
-    assert_eq!(Solution::longest_valid_parentheses("(()(((()".to_owned()), 2);
+    assert_eq!(
+        Solution::longest_valid_parentheses("(()(((()".to_owned()),
+        2
+    );
     assert_eq!(Solution::longest_valid_parentheses("()(())".to_owned()), 6);
-    assert_eq!(Solution::longest_valid_parentheses("(()()(())((".to_owned()), 8);
-    assert_eq!(Solution::longest_valid_parentheses(")(((((()())()()))()(()))(".to_owned()), 22);
+    assert_eq!(
+        Solution::longest_valid_parentheses("(()()(())((".to_owned()),
+        8
+    );
+    assert_eq!(
+        Solution::longest_valid_parentheses(")(((((()())()()))()(()))(".to_owned()),
+        22
+    );
 }
 
 #[test]
@@ -98,7 +110,6 @@ fn test_longest_valid_parentheses_loong_one() {
     );
 }
 
-
 #[test]
 fn test_longest_valid_parentheses_longest_of_all_time() {
     assert_eq!(
@@ -106,4 +117,3 @@ fn test_longest_valid_parentheses_longest_of_all_time() {
         2644
     );
 }
-

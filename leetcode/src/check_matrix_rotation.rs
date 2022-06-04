@@ -29,16 +29,24 @@ struct Solution;
 use std::mem;
 
 fn transpose(m: &mut Vec<Vec<i32>>, x: usize, y: usize) {
-    let size = m.len()-1;
+    let size = m.len() - 1;
 
-    let directions = [(x, y), (y, size-x), (size-x, size-y), (size-y, x), (x, y)];
-    directions.iter().fold(0, |acc, x| mem::replace(&mut m[x.0][x.1], acc));
+    let directions = [
+        (x, y),
+        (y, size - x),
+        (size - x, size - y),
+        (size - y, x),
+        (x, y),
+    ];
+    directions
+        .iter()
+        .fold(0, |acc, x| mem::replace(&mut m[x.0][x.1], acc));
 }
 
-fn rotate(mut mat :&mut Vec<Vec<i32>>) {
+fn rotate(mut mat: &mut Vec<Vec<i32>>) {
     let mlen = mat.len();
-    for x in 0..mlen/2 {
-        for y in x..(mlen-1)-x {
+    for x in 0..mlen / 2 {
+        for y in x..(mlen - 1) - x {
             transpose(&mut mat, x, y);
         }
     }
@@ -47,12 +55,23 @@ fn rotate(mut mat :&mut Vec<Vec<i32>>) {
 impl Solution {
     pub fn find_rotation(mat: Vec<Vec<i32>>, target: Vec<Vec<i32>>) -> bool {
         let mut mat = mat;
-        (0..4).take_while(|_| {rotate(&mut mat); mat != target}).for_each(|_| ());
+        (0..4)
+            .take_while(|_| {
+                rotate(&mut mat);
+                mat != target
+            })
+            .for_each(|_| ());
         mat == target
     }
 }
 
 #[test]
 fn test_find_rotation() {
-    assert_eq!(Solution::find_rotation(vec![vec![0,0,0],vec![0,1,0],vec![1,1,1]], vec![vec![1,1,1],vec![0,1,0],vec![0,0,0]]), true);
+    assert_eq!(
+        Solution::find_rotation(
+            vec![vec![0, 0, 0], vec![0, 1, 0], vec![1, 1, 1]],
+            vec![vec![1, 1, 1], vec![0, 1, 0], vec![0, 0, 0]]
+        ),
+        true
+    );
 }

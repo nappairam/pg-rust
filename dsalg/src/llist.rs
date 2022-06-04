@@ -40,10 +40,16 @@ mod tests {
     #[test]
     fn test_linked_list() {
         let _a: u32 = 10;
-        let _b: (u32, ) = (10, );
+        let _b: (u32,) = (10,);
         let empty: RecursiveLinkedList<u32> = RecursiveLinkedList::new();
         let mut ll: RecursiveLinkedList<u32> = RecursiveLinkedList::new();
-        println!("empty = {:?} {:p} {:?} size:{:?}", empty, &empty, mem::discriminant(&empty.0), mem::size_of::<RecursiveLinkedList<i32>>());
+        println!(
+            "empty = {:?} {:p} {:?} size:{:?}",
+            empty,
+            &empty,
+            mem::discriminant(&empty.0),
+            mem::size_of::<RecursiveLinkedList<i32>>()
+        );
         println!("ll = {:?} {:p} {:?}", ll, &ll, mem::discriminant(&ll.0));
 
         ll.push_front(3);

@@ -40,8 +40,14 @@ impl Solution {
         //     }
         //     dp[*num as usize] = true;
         // }
-        nums.iter().filter(|&&x| x > 0 && x <= nums_len as i32).for_each(|&x| dp[x as usize] = true);
-        (dp.iter().skip(1).position(|&value| !value).unwrap_or(nums_len) + 1) as i32
+        nums.iter()
+            .filter(|&&x| x > 0 && x <= nums_len as i32)
+            .for_each(|&x| dp[x as usize] = true);
+        (dp.iter()
+            .skip(1)
+            .position(|&value| !value)
+            .unwrap_or(nums_len)
+            + 1) as i32
     }
 
     pub fn first_missing_positive_naive(nums: Vec<i32>) -> i32 {

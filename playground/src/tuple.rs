@@ -1,5 +1,4 @@
 #[cfg(test)]
-
 #[test]
 fn test_option() {
     #[derive(Debug, Default)]

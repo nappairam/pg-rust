@@ -39,11 +39,10 @@ struct NumMatrix {
     c: Vec<Vec<i32>>,
 }
 
-
 /**
-  * `&self` means the method takes an immutable reference
-  * If you need a mutable reference, change it to `&mut self` instead
-  */
+ * `&self` means the method takes an immutable reference
+ * If you need a mutable reference, change it to `&mut self` instead
+ */
 impl NumMatrix {
     fn new(matrix: Vec<Vec<i32>>) -> Self {
         let mut computed = vec![vec![0; matrix[0].len()]; matrix.len()];
@@ -51,17 +50,20 @@ impl NumMatrix {
             for y in 0..matrix[0].len() {
                 computed[x][y] += matrix[x][y];
                 if x != 0 {
-                    computed[x][y] += computed[x-1][y];
+                    computed[x][y] += computed[x - 1][y];
                 }
                 if y != 0 {
-                    computed[x][y] += computed[x][y-1];
+                    computed[x][y] += computed[x][y - 1];
                 }
-                if x != 0 && y!= 0 {
-                    computed[x][y] -= computed[x-1][y-1];
+                if x != 0 && y != 0 {
+                    computed[x][y] -= computed[x - 1][y - 1];
                 }
             }
         }
-        Self {m: matrix, c: computed}
+        Self {
+            m: matrix,
+            c: computed,
+        }
     }
 
     fn sum_region(&self, row1: i32, col1: i32, row2: i32, col2: i32) -> i32 {
@@ -71,13 +73,13 @@ impl NumMatrix {
         let col2 = col2 as usize;
         let mut sum = self.c[row2][col2];
         if row1 != 0 {
-            sum -= self.c[row1-1][col2];
+            sum -= self.c[row1 - 1][col2];
         }
         if col1 != 0 {
-            sum -= self.c[row2][col1-1];
+            sum -= self.c[row2][col1 - 1];
         }
         if row1 != 0 && col1 != 0 {
-            sum += self.c[row1-1][col1-1];
+            sum += self.c[row1 - 1][col1 - 1];
         }
         sum
     }
@@ -90,10 +92,15 @@ impl NumMatrix {
  */
 #[test]
 fn test_sum_region() {
-    let matrix = vec![vec![1, 1, 1, 1, 1], vec![1, 1, 1, 1, 1], vec![1, 1, 1, 1, 1], vec![1, 1, 1, 1, 1], vec![1, 1, 1, 1, 1]];
+    let matrix = vec![
+        vec![1, 1, 1, 1, 1],
+        vec![1, 1, 1, 1, 1],
+        vec![1, 1, 1, 1, 1],
+        vec![1, 1, 1, 1, 1],
+        vec![1, 1, 1, 1, 1],
+    ];
     let nm = NumMatrix::new(matrix);
     println!("{:?}", nm);
 
-    assert_eq!(nm.sum_region(1,1, 3, 3), 9);
-
+    assert_eq!(nm.sum_region(1, 1, 3, 3), 9);
 }

@@ -35,10 +35,9 @@ impl Solution {
         let mut iteration_needed = true;
         // let is_done = |arr: &Vec<i32>| (arr.iter().fold((true, 0), |acc, &x| (acc.0 && acc.1 <= x, x))).0;
 
-        while iteration_needed
-        {
+        while iteration_needed {
             let mut var: Vec<bool> = vec![];
-            nums.iter().fold((&mut var, 0), |mut acc, &x|  {
+            nums.iter().fold((&mut var, 0), |mut acc, &x| {
                 acc.0.push(acc.1 <= x);
                 acc.1 = x;
                 acc
@@ -55,5 +54,8 @@ impl Solution {
 
 #[test]
 fn test_total_steps() {
-    assert_eq!(Solution::total_steps(vec![5,3,4,4,7,3,6,11,8,5,11]), 3)
+    assert_eq!(
+        Solution::total_steps(vec![5, 3, 4, 4, 7, 3, 6, 11, 8, 5, 11]),
+        3
+    )
 }

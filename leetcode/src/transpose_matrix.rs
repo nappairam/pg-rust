@@ -39,5 +39,8 @@ impl Solution {
 
 #[test]
 fn test_transpose() {
-    assert_eq!(Solution::transpose(vec![vec![1, 0], vec![2, 3], vec![4, 5]]), vec![vec![1,2,4], vec![0,3,5]]);
+    assert_eq!(
+        Solution::transpose(vec![vec![1, 0], vec![2, 3], vec![4, 5]]),
+        vec![vec![1, 2, 4], vec![0, 3, 5]]
+    );
 }

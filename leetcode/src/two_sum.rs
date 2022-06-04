@@ -14,7 +14,6 @@
 // -109 <= target <= 109
 // Only one valid answer exists.
 
-
 struct Solution;
 
 use std::collections::HashMap;

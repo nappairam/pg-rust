@@ -37,14 +37,18 @@ impl Solution {
         coins.sort();
 
         for x in 1..amount + 1 {
-            let b = coins.iter().filter(|&&c| c <= x).map(|c| x-c).fold(i32::MAX, |_a, c| {
-                // println!("c is {} x is {} {:?}", c, x, dp);
-                if dp[c as usize] != i32::MAX {
-                    cmp::min(1 + dp[c as usize], dp[x as usize])
-                } else {
-                    i32::MAX
-                }
-            });
+            let b = coins
+                .iter()
+                .filter(|&&c| c <= x)
+                .map(|c| x - c)
+                .fold(i32::MAX, |_a, c| {
+                    // println!("c is {} x is {} {:?}", c, x, dp);
+                    if dp[c as usize] != i32::MAX {
+                        cmp::min(1 + dp[c as usize], dp[x as usize])
+                    } else {
+                        i32::MAX
+                    }
+                });
             dp[x as usize] = b;
             // println!("{:?}", dp);
         }
@@ -66,7 +70,7 @@ mod tests {
         assert_eq!(Solution::coin_change(vec![1, 2, 5], 11), 3);
         assert_eq!(Solution::coin_change(vec![2], 3), -1);
         assert_eq!(Solution::coin_change(vec![1], 0), 0);
-        assert_eq!(Solution::coin_change(vec![2,5,10,1], 27), 4);
-        assert_eq!(Solution::coin_change(vec![2,5,10,1], 27), 4);
+        assert_eq!(Solution::coin_change(vec![2, 5, 10, 1], 27), 4);
+        assert_eq!(Solution::coin_change(vec![2, 5, 10, 1], 27), 4);
     }
 }

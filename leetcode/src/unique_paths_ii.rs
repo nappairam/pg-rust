@@ -45,19 +45,19 @@ impl Solution {
         let mut grid = vec![vec![0; n]; 2];
         let mut curr = 0;
         let mut prev = 1;
-        grid[curr][n-1] = 1;
+        grid[curr][n - 1] = 1;
 
         for x in (0..m).rev() {
             for y in (0..n).rev() {
                 if obstacle_grid[x][y] == 1 {
-                    continue
+                    continue;
                 }
                 if x + 1 < m && obstacle_grid[x + 1][y] == 0 {
                     grid[curr][y] += grid[prev][y];
                 }
 
                 if y + 1 < n && obstacle_grid[x][y + 1] == 0 {
-                    grid[curr][y] += grid[curr][y+1];
+                    grid[curr][y] += grid[curr][y + 1];
                 }
             }
             mem::swap(&mut curr, &mut prev);
@@ -76,8 +76,12 @@ impl Solution {
             return unique_paths;
         }
 
-
-        fn find_unique_paths(grid: &Vec<Vec<i32>>, mut paths: &mut i32, x: usize, y: usize) -> bool {
+        fn find_unique_paths(
+            grid: &Vec<Vec<i32>>,
+            mut paths: &mut i32,
+            x: usize,
+            y: usize,
+        ) -> bool {
             let m = grid.len();
             let n = grid[0].len();
             let is_safe = |x, y| x < m && y < n;
@@ -116,16 +120,20 @@ mod tests {
 
     #[test]
     fn test_unique_paths_simple() {
-        assert_eq!(Solution::unique_paths_with_obstacles(
-            vec![vec![0, 0, 0], vec![0, 1, 0], vec![0, 0, 0]]),
-                   2
+        assert_eq!(
+            Solution::unique_paths_with_obstacles(vec![
+                vec![0, 0, 0],
+                vec![0, 1, 0],
+                vec![0, 0, 0]
+            ]),
+            2
         );
     }
 
     #[test]
     fn test_unique_paths_big() {
-        assert_eq!(Solution::unique_paths_with_obstacles(
-            vec![
+        assert_eq!(
+            Solution::unique_paths_with_obstacles(vec![
                 vec![0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
                 vec![0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0],
                 vec![1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1],
@@ -155,9 +163,8 @@ mod tests {
                 vec![0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0],
                 vec![1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1],
                 vec![1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-            ]
-        ),
-                   13594824
+            ]),
+            13594824
         );
     }
 }

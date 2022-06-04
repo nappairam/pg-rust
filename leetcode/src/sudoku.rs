@@ -41,16 +41,20 @@ impl<'a> Sudoku<'a> {
 
     fn is_safe(&self, x: usize, y: usize, value: char) -> bool {
         // Find x and y of contained square
-        let _x= (x / 3) * 3;
-        let _y= (y / 3) * 3;
+        let _x = (x / 3) * 3;
+        let _y = (y / 3) * 3;
 
-        !self.0[x].iter().any(|&cell| cell == value) &&
-            !self.0.iter().any(|row| row[y] == value) &&
-            !self.0[_x.._x+3].iter().any(|row| row[_y.._y+3].iter().any(|&cell| cell == value))
+        !self.0[x].iter().any(|&cell| cell == value)
+            && !self.0.iter().any(|row| row[y] == value)
+            && !self.0[_x.._x + 3]
+                .iter()
+                .any(|row| row[_y.._y + 3].iter().any(|&cell| cell == value))
     }
 
     fn _solve(&mut self, x: usize, y: usize) -> bool {
-        if x > 8 { return true; }
+        if x > 8 {
+            return true;
+        }
 
         let mut next_x = x;
         let mut next_y = y + 1;
@@ -59,11 +63,13 @@ impl<'a> Sudoku<'a> {
             next_y = 0;
         }
         if self.0[x][y] != '.' {
-            return self._solve(next_x, next_y)
+            return self._solve(next_x, next_y);
         }
 
         for test_value in NUMBERS {
-            if !self.is_safe(x, y, test_value) { continue; }
+            if !self.is_safe(x, y, test_value) {
+                continue;
+            }
             self.0[x][y] = test_value;
             if self._solve(next_x, next_y) {
                 return true;
@@ -74,7 +80,6 @@ impl<'a> Sudoku<'a> {
         false
     }
 
-
     pub fn solve(&mut self) -> bool {
         self._solve(0, 0)
     }
@@ -83,7 +88,7 @@ impl<'a> Sudoku<'a> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    fn get_sample_data () -> (Vec<Vec<char>>, Vec<Vec<char>>) {
+    fn get_sample_data() -> (Vec<Vec<char>>, Vec<Vec<char>>) {
         let problem = vec![
             vec!['5', '3', '.', '.', '7', '.', '.', '.', '.'],
             vec!['6', '.', '.', '1', '9', '5', '.', '.', '.'],
@@ -104,9 +109,9 @@ mod tests {
             vec!['7', '1', '3', '9', '2', '4', '8', '5', '6'],
             vec!['9', '6', '1', '5', '3', '7', '2', '8', '4'],
             vec!['2', '8', '7', '4', '1', '9', '6', '3', '5'],
-            vec!['3', '4', '5', '2', '8', '6', '1', '7', '9']
+            vec!['3', '4', '5', '2', '8', '6', '1', '7', '9'],
         ];
-        return (problem.clone(), solution.clone())
+        return (problem.clone(), solution.clone());
     }
 
     #[test]

@@ -46,10 +46,10 @@ impl Solution {
             dp.push(bitmap);
         }
         for (index, _) in dp.iter().enumerate() {
-            for i in index+1..total_words {
+            for i in index + 1..total_words {
                 // println!("Comparing {} {} with bitmask {:b} {:b}", words[index], words[i], dp[index], dp[i]);
                 if dp[index] & dp[i] == 0 {
-                    max = cmp::max(max, words[index].len()*words[i].len())
+                    max = cmp::max(max, words[index].len() * words[i].len())
                 }
             }
         }
@@ -59,7 +59,13 @@ impl Solution {
 
 #[test]
 fn test_max_product() {
-    assert_eq!(Solution::max_product(vec!["abcw","baz","foo","bar","xtfn","abcdef"]), 16);
-    assert_eq!(Solution::max_product(vec!["a","ab","abc","d","cd","bcd","abcd"]), 4);
-    assert_eq!(Solution::max_product(vec!["a","aa","aaa","aaaa"]), 0);
+    assert_eq!(
+        Solution::max_product(vec!["abcw", "baz", "foo", "bar", "xtfn", "abcdef"]),
+        16
+    );
+    assert_eq!(
+        Solution::max_product(vec!["a", "ab", "abc", "d", "cd", "bcd", "abcd"]),
+        4
+    );
+    assert_eq!(Solution::max_product(vec!["a", "aa", "aaa", "aaaa"]), 0);
 }

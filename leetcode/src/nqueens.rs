@@ -1,4 +1,3 @@
-#![allow(unused_must_use)]
 // 51. N-Queens
 // https://leetcode.com/problems/n-queens/
 //
@@ -20,10 +19,9 @@
 // Constraints:
 // 1 <= n <= 9
 
+use std::fmt::{Display, Formatter};
 
 struct Solution;
-
-use std::fmt::{Display, Formatter};
 
 impl Solution {
     pub fn solve_n_queens(n: i32) -> Vec<Vec<String>> {
@@ -48,8 +46,11 @@ struct Board {
 
 impl Display for Board {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "\n");
-        self.cells.iter().for_each(|row| {write!(f, "{:?}\n", row);()});
+        write!(f, "\n")?;
+        self.cells.iter().for_each(|row| {
+            write!(f, "{:?}\n", row);
+            ()
+        });
         write!(f, "")
     }
 }
@@ -64,9 +65,12 @@ impl Board {
     }
 
     fn is_safe(&self, x: usize, y: usize) -> bool {
-        (0..x).into_iter().rev().all(|i| (y < (x-i) || self.cells[i][y-(x-i)] == Status::Empty) && (y+(x-i) >= self.size || self.cells[i][y+(x-i)] == Status::Empty)) &&
-            self.cells.iter().all(|row| row[y as usize] == Status::Empty) &&
-            self.cells[x as usize].iter().all(|&value| value == Status::Empty)
+        self.cells.iter().all(|row| row[y] == Status::Empty)
+            && self.cells[x].iter().all(|&value| value == Status::Empty)
+            && (0..x).into_iter().rev().all(|i| {
+                (y < (x - i) || self.cells[i][y - (x - i)] == Status::Empty)
+                    && (y + (x - i) >= self.size || self.cells[i][y + (x - i)] == Status::Empty)
+            })
     }
 
     fn solve_util(&mut self, row: usize) -> bool {
@@ -78,7 +82,7 @@ impl Board {
                 continue;
             }
             self.cells[row][col] = Status::Occupied;
-            if self.solve_util(row+1) {
+            if self.solve_util(row + 1) {
                 return true;
             }
             self.cells[row][col] = Status::Empty;
@@ -96,12 +100,12 @@ impl Board {
 
     fn to_output(&self) -> Vec<String> {
         let mut board: Vec<String> = vec![];
-        self.cells.iter().for_each(|row|{
+        self.cells.iter().for_each(|row| {
             let mut a: String = String::new();
             for i in row {
                 a.push(match i {
-                    Status::Empty => {'.'},
-                    Status::Occupied => {'Q'}
+                    Status::Empty => '.',
+                    Status::Occupied => 'Q',
                 })
             }
             board.push(a);
@@ -119,20 +123,20 @@ impl Board {
                 continue;
             }
             self.cells[row][col] = Status::Occupied;
-            self.multi_solve_util(row+1);
+            self.multi_solve_util(row + 1);
             self.cells[row][col] = Status::Empty;
         }
     }
 
     fn multi_solve(&mut self) -> bool {
         self.multi_solve_util(0);
-        return self.solution.len() > 0 ;
+        return self.solution.len() > 0;
     }
 }
 
 #[test]
 fn test_multi_solve_board() {
-    for i in 1..5 {
+    for i in 9..10 {
         let mut b = Board::new(i);
         b.multi_solve();
         println!("Solution is {:?}", b.solution);
@@ -150,8 +154,15 @@ fn test_solve_board() {
 
 #[test]
 fn test_iter() {
-    (0..=5).into_iter().inspect(|i| println!("iter {}", i)).all(|_| true);
-    (0..=5).into_iter().rev().inspect(|i| println!("iter {}", i)).all(|_| true);
+    (0..=5)
+        .into_iter()
+        .inspect(|i| println!("iter {}", i))
+        .all(|_| true);
+    (0..=5)
+        .into_iter()
+        .rev()
+        .inspect(|i| println!("iter {}", i))
+        .all(|_| true);
 }
 
 #[test]
@@ -161,7 +172,7 @@ fn test_create_board() {
     assert_eq!(b.cells, vec![vec![Status::Empty]]);
     let b = Board::new(2);
     assert_eq!(b.size, 2);
-    assert_eq!(b.cells, vec![vec![Status::Empty;2];2]);
+    assert_eq!(b.cells, vec![vec![Status::Empty; 2]; 2]);
 }
 
 #[test]

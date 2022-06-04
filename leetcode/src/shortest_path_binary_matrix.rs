@@ -18,15 +18,24 @@
 
 struct Solution;
 
-use std::collections::{VecDeque};
+use std::collections::VecDeque;
 
-const DIRECTIONS: [(i32, i32); 8] = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)];
+const DIRECTIONS: [(i32, i32); 8] = [
+    (-1, -1),
+    (-1, 0),
+    (-1, 1),
+    (0, -1),
+    (0, 1),
+    (1, -1),
+    (1, 0),
+    (1, 1),
+];
 
 impl Solution {
     pub fn shortest_path_binary_matrix(mut grid: Vec<Vec<i32>>) -> i32 {
         let grid_length = grid.len();
         // Handle corner case
-        if grid[0][0] == 1 || grid[grid_length-1][grid_length-1] == 1 {
+        if grid[0][0] == 1 || grid[grid_length - 1][grid_length - 1] == 1 {
             return -1;
         }
 
@@ -35,14 +44,14 @@ impl Solution {
         grid[0][0] = 1;
         queue.push_back((0, 0));
 
-
         while !queue.is_empty() {
             let (x, y) = queue.pop_front().unwrap();
-            let is_safe_index = | i | i >= 0 && i < grid_length as i32;
+            let is_safe_index = |i| i >= 0 && i < grid_length as i32;
             let is_safe = |x: i32, y: i32| is_safe_index(x) && is_safe_index(y);
 
-            for (next_x, next_y) in DIRECTIONS.iter()
-                .map(|(_x, _y)| (x+_x, y+_y))
+            for (next_x, next_y) in DIRECTIONS
+                .iter()
+                .map(|(_x, _y)| (x + _x, y + _y))
                 .filter(|&(_x, _y)| is_safe(_x, _y))
             {
                 if grid[next_x as usize][next_y as usize] != 0 {
@@ -53,7 +62,11 @@ impl Solution {
             }
         }
 
-        if 0 != grid[grid_length-1][grid_length-1] {grid[grid_length-1][grid_length-1]} else {-1}
+        if 0 != grid[grid_length - 1][grid_length - 1] {
+            grid[grid_length - 1][grid_length - 1]
+        } else {
+            -1
+        }
     }
 }
 

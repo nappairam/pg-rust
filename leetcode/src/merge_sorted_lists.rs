@@ -111,13 +111,16 @@ impl Solution {
                     }
                 }
             }
-            let minimum = temp_list
-                .iter()
-                .enumerate()
-                .fold(
-                    (usize::MAX, i32::MAX),
-                    |(acc_ind, acc_val), (cur_ind, &cur_val)| if cur_val < acc_val { (cur_ind, cur_val) } else { (acc_ind, acc_val) },
-                );
+            let minimum = temp_list.iter().enumerate().fold(
+                (usize::MAX, i32::MAX),
+                |(acc_ind, acc_val), (cur_ind, &cur_val)| {
+                    if cur_val < acc_val {
+                        (cur_ind, cur_val)
+                    } else {
+                        (acc_ind, acc_val)
+                    }
+                },
+            );
             if minimum.0 != usize::MAX {
                 merged_list.push(minimum.1);
                 temp_list[minimum.0] = i32::MAX;
