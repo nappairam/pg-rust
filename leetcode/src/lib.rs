@@ -18,3 +18,4 @@ mod transpose_matrix;
 mod rotate_image;
 mod check_matrix_rotation;
 mod range_sum_2d;
+mod nqueens;
