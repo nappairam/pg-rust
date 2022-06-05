@@ -30,6 +30,12 @@ impl Solution {
         board.multi_solve();
         board.solution
     }
+
+    pub fn total_n_queens(n: i32) -> i32 {
+        let mut board = Board::new(n as usize);
+        board.multi_solve();
+        board.solution.len() as i32
+    }
 }
 
 #[derive(Copy, Clone, Debug, PartialOrd, PartialEq)]
@@ -65,6 +71,12 @@ impl Board {
     }
 
     fn is_safe(&self, x: usize, y: usize) -> bool {
+        // Another diagonal check without zip
+        // (0..x).into_iter().rev().all(|i| {
+        //     (y < (x - i) || self.cells[i][y - (x - i)] == Status::Empty)
+        //     && (y + (x - i) >= self.size || self.cells[i][y + (x - i)] == Status::Empty)
+        // })
+
         // Row Check
         self.cells.iter().all(|row| row[y] == Status::Empty)
             // Column Check
@@ -131,6 +143,14 @@ impl Board {
     fn multi_solve(&mut self) -> bool {
         self.multi_solve_util(0);
         self.solution.len() > 0
+    }
+}
+
+#[test]
+fn test_solve_board_count() {
+    let res = [1, 0, 0, 2, 10, 4, 40, 92, 352];
+    for i in 1..10 {
+        assert_eq!(Solution::total_n_queens(i), res[i as usize - 1]);
     }
 }
 
