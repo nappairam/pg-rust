@@ -20,6 +20,7 @@
 // 1 <= n <= 9
 
 use std::fmt::{Display, Formatter};
+use std::iter::zip;
 
 struct Solution;
 
@@ -47,10 +48,9 @@ struct Board {
 impl Display for Board {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "\n")?;
-        self.cells.iter().for_each(|row| {
-            write!(f, "{:?}\n", row);
-            ()
-        });
+        for row in self.cells.iter() {
+            write!(f, "{:?}\n", row)?;
+        }
         write!(f, "")
     }
 }
@@ -65,12 +65,16 @@ impl Board {
     }
 
     fn is_safe(&self, x: usize, y: usize) -> bool {
+        // Row Check
         self.cells.iter().all(|row| row[y] == Status::Empty)
+            // Column Check
             && self.cells[x].iter().all(|&value| value == Status::Empty)
-            && (0..x).into_iter().rev().all(|i| {
-                (y < (x - i) || self.cells[i][y - (x - i)] == Status::Empty)
-                    && (y + (x - i) >= self.size || self.cells[i][y + (x - i)] == Status::Empty)
-            })
+            // Left diagonal Check
+            && zip((0..x).into_iter().rev(), (0..y).into_iter().rev())
+                .all(|(row, col)| self.cells[row][col] == Status::Empty)
+            // Right diagonal Check
+            && zip((0..x).into_iter().rev(), (y + 1..self.size).into_iter())
+                .all(|(row, col)| self.cells[row][col] == Status::Empty)
     }
 
     fn solve_util(&mut self, row: usize) -> bool {
@@ -90,12 +94,8 @@ impl Board {
         false
     }
 
-    fn solve(&mut self) {
-        if self.solve_util(0) {
-            println!("Solved board is {}", self);
-        } else {
-            println!("Un-Solved board is {}", self);
-        }
+    fn solve(&mut self) -> bool {
+        self.solve_util(0)
     }
 
     fn to_output(&self) -> Vec<String> {
@@ -130,16 +130,16 @@ impl Board {
 
     fn multi_solve(&mut self) -> bool {
         self.multi_solve_util(0);
-        return self.solution.len() > 0;
+        self.solution.len() > 0
     }
 }
 
 #[test]
 fn test_multi_solve_board() {
-    for i in 9..10 {
+    for i in 1..6 {
         let mut b = Board::new(i);
         b.multi_solve();
-        println!("Solution is {:?}", b.solution);
+        println!("Solution is ({}): {:?}", b.solution.len(), b.solution);
     }
 }
 
