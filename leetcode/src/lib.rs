@@ -19,3 +19,4 @@ mod sudoku;
 mod transpose_matrix;
 mod two_sum;
 mod unique_paths_ii;
+mod disjoint_array;
