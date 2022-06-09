@@ -19,6 +19,7 @@ mod running_sum;
 mod shortest_path_binary_matrix;
 mod sorted_two_sum_ii;
 mod sudoku;
+mod three_sum;
 mod transpose_matrix;
 mod two_sum;
 mod unique_paths_ii;
