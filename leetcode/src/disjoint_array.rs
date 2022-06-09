@@ -38,7 +38,7 @@ impl Solution {
         let mut biggest = lbiggest;
         let mut result = 0;
 
-        nums.into_iter().enumerate().for_each(|(i, num)|{
+        nums.into_iter().enumerate().for_each(|(i, num)| {
             if num > biggest {
                 biggest = num;
             }
@@ -53,9 +53,7 @@ impl Solution {
 
 #[test]
 fn test_partition_disjoint() {
-    assert_eq!(Solution::partition_disjoint(vec![1,1,1,0,6,12]), 4);
-    assert_eq!(Solution::partition_disjoint(vec![5,0,3,8,6]), 3);
-    assert_eq!(Solution::partition_disjoint(vec![1,1]), 1);
+    assert_eq!(Solution::partition_disjoint(vec![1, 1, 1, 0, 6, 12]), 4);
+    assert_eq!(Solution::partition_disjoint(vec![5, 0, 3, 8, 6]), 3);
+    assert_eq!(Solution::partition_disjoint(vec![1, 1]), 1);
 }
-
-

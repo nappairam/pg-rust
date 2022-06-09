@@ -69,3 +69,8 @@ fn test_max_product() {
     );
     assert_eq!(Solution::max_product(vec!["a", "aa", "aaa", "aaaa"]), 0);
 }
+
+#[test]
+fn test_cmp() {
+    assert_eq!(cmp::max(0, -1), -1);
+}
