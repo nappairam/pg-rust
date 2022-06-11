@@ -59,3 +59,8 @@ impl Solution {
         result
     }
 }
+
+#[test]
+fn test_three_sum() {
+    assert_eq!(Solution::three_sum(vec![1, 1, -2, 4]), vec![vec![-2, 1, 1]]);
+}
