@@ -23,3 +23,7 @@ mod three_sum;
 mod transpose_matrix;
 mod two_sum;
 mod unique_paths_ii;
+mod merge_sorted_llist;
+mod nonrepeating_longest_subs;
+mod duplicate_consecutive_number;
+mod min_op_to_zero;
