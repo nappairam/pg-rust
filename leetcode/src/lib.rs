@@ -28,3 +28,5 @@ mod nonrepeating_longest_subs;
 mod duplicate_consecutive_number;
 mod min_op_to_zero;
 mod max_erasure_value;
+mod triangle_min_total;
+mod del_op_2_strings;
