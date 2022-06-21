@@ -16,7 +16,7 @@ fn test_option() {
     dbg!(&a);
 
     let mut ptr = &a;
-    let mut pptr = &ptr;
+    let pptr = &ptr;
     let int_ptr = a.as_ref();
     let int_ptr_deref = a.as_ref().unwrap();
     println!(

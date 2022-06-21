@@ -203,3 +203,8 @@ fn test_min_operations() {
     assert_eq!(Solution::min_operations(vec![5, 6, 7, 8, 9], 4), -1);
     assert_eq!(Solution::min_operations(vec![1, 1, 4, 2, 3], 5), 2);
 }
+
+#[test]
+fn test_min_operations_1() {
+    assert_eq!(Solution::min_operations(vec![1, ], 3), -1);
+}
