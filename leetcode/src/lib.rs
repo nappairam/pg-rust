@@ -34,3 +34,4 @@ mod triangle_min_total;
 mod two_sum;
 mod unique_paths_ii;
 mod short_encoding;
+mod furthest_building_1642;
