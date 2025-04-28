@@ -13,3 +13,4 @@ mod two_sum;
 mod types;
 mod vec_iter;
 mod enum_compare;
+mod mutex_lock;
